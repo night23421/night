@@ -8,19 +8,9 @@
     body { margin: 0; font-family: Arial, sans-serif; background: #f4f8fb; color: #222; }
     .container { max-width: 760px; margin: 0 auto; padding: 20px; }
     .header { background: #0f766e; color: white; padding: 24px; border-radius: 14px; text-align: center; }
-    .card { background: white; margin-top: 16px; padding: 18px; border-radius: 12px; box-shadow: 0 2px 8px #0001; }
+    .card { background: white; margin-top: 16px; padding: 18px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
     .status { display: inline-block; padding: 6px 12px; border-radius: 20px; background: #dcfce7; color: #166534; font-weight: bold; }
-    .timeline li { margin: 8px 0; list-style: none; position: relative; padding-left: 20px; }
-    .timeline li::before {
-      content: '';
-      position: absolute;
-      left: 0;
-      top: 6px;
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: #0f766e;
-    }
+    .timeline li { margin: 8px 0; }
     .error { color: #b91c1c; font-weight: bold; }
   </style>
 </head>
@@ -47,12 +37,12 @@
           app.innerHTML = `
             <h2>欢迎使用溯源系统</h2>
             <p>请使用带有产品编号的二维码进行查询</p>
-            <p>示例ID：BANANA202605001</p>
+            <p>示例：?id=BANANA202605001</p>
           `;
           return;
         }
 
-        const product = products.find(p => p.id === productId);
+        const product = products.find(p => p.id == productId);
 
         if (!product) {
           app.innerHTML = '<p class="error">未找到该产品信息</p>';
@@ -72,14 +62,13 @@
           <h3>二、检测信息</h3>
           <p>检测机构：${product.testOrg}</p>
           <p>检测结果：${product.testResult}</p>
-          <h3>三、物流时间轴</h3>
-          <ul class="timeline">${product.logistics.map(item => `<li>${item}</li>`).join('')}</ul>
+          <h3>三、物流信息</h3>
+          <ul>${product.logistics.map(i => `<li>${i}</li>`).join('')}</ul>
           <h3>四、溯源结论</h3>
           <p>${product.conclusion}</p>
         `;
       } catch (err) {
-        app.innerHTML = '<p class="error">数据加载失败，请检查文件是否上传正确</p>';
-        console.error(err);
+        app.innerHTML = '<p class="error">数据加载失败</p>';
       }
     }
 
